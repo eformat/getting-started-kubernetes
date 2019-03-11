@@ -1,4 +1,4 @@
-# getting-started-kubernetes
+# Quarkus Getting Started Kubernetes Pipeline
 
 ## Build Graal Maven Jenkins Slave in OpenShift
 
