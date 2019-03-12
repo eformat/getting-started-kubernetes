@@ -7,10 +7,10 @@
   <version>1.0-SNAPSHOT</version>
   <properties>
     <quarkus.version>0.11.0</quarkus.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <surefire.version>2.22.0</surefire.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <surefire.version>2.22.0</surefire.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -49,6 +49,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-metrics</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-reactive-streams-operators</artifactId>
     </dependency>
   </dependencies>
   <build>
