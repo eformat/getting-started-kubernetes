@@ -1,14 +1,34 @@
 pipeline {
     environment {
         APP_NAME = "quarkus-quickstart"
-        DEV_NAMESPACE = "quarkus-hello"
         GIT_SSL_NO_VERIFY = 'true'
         GIT_URL='https://github.com/eformat/getting-started-kubernetes.git'
         BRANCH_NAME='master'
     }
 
+    parameters {
+        string(name: 'DEV_NAMESPACE', defaultValue: 'quarkus-hello', description: "Dev Namespace Name")
+    }
+
     agent {
         label "master"
+    }
+
+    stage('initialise') {
+        steps {
+            script {
+                echo "Build Number is: ${env.BUILD_NUMBER}"
+                echo "Job Name is: ${env.JOB_NAME}"
+                echo "Branch name is: ${env.BRANCH_NAME}"
+                sh "oc version"
+                sh 'printenv'
+                if ("${env.BRANCH_NAME}".length()>0) {
+                    env.GIT_BRANCH = "${env.BRANCH_NAME}".toLowerCase()
+                    echo "env.GIT_BRANCH is: ${env.GIT_BRANCH}"
+                }
+                env.DEV_PROJECT = "${params.DEV_NAMESPACE}"
+            }
+        }
     }
 
     stages {
