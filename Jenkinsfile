@@ -15,24 +15,24 @@ pipeline {
         label "master"
     }
 
-    stage('initialise') {
-        steps {
-            script {
-                echo "Build Number is: ${env.BUILD_NUMBER}"
-                echo "Job Name is: ${env.JOB_NAME}"
-                echo "Branch name is: ${env.BRANCH_NAME}"
-                sh "oc version"
-                sh 'printenv'
-                if ("${env.BRANCH_NAME}".length()>0) {
-                    env.GIT_BRANCH = "${env.BRANCH_NAME}".toLowerCase()
-                    echo "env.GIT_BRANCH is: ${env.GIT_BRANCH}"
+    stages {
+        stage('initialise') {
+            steps {
+                script {
+                    echo "Build Number is: ${env.BUILD_NUMBER}"
+                    echo "Job Name is: ${env.JOB_NAME}"
+                    echo "Branch name is: ${env.BRANCH_NAME}"
+                    sh "oc version"
+                    sh 'printenv'
+                    if ("${env.BRANCH_NAME}".length()>0) {
+                        env.GIT_BRANCH = "${env.BRANCH_NAME}".toLowerCase()
+                        echo "env.GIT_BRANCH is: ${env.GIT_BRANCH}"
+                    }
+                    env.DEV_PROJECT = "${params.DEV_NAMESPACE}"
                 }
-                env.DEV_PROJECT = "${params.DEV_NAMESPACE}"
             }
         }
-    }
 
-    stages {
         stage('Build and Deploy Dev') {
             agent {
               kubernetes {
