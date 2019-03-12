@@ -62,7 +62,7 @@ pipeline {
                                 // maven cache configuration (change mirror host)
                                 sh "sed -i \"s|<!-- ### configured mirrors ### -->|<mirror><id>mirror.default</id><url>http://nexus.nexus.svc.cluster.local:8081/repository/maven-public/</url><mirrorOf>external:*</mirrorOf></mirror>|\" /home/jenkins/.m2/settings.xml"
                                 sh '''
-                                # export PATH=/opt/rh/rh-maven35/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+                                export PATH=/opt/rh/rh-maven35/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
                                 mvn clean package -Pnative -DskipTests
                                 '''
                                 sh  '''
