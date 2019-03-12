@@ -93,6 +93,8 @@ EOF
                                         return it.object().status.phase == "Complete"
                                     }
                                     sh "oc new-app -n ${env.DEV_NAMESPACE} --image-stream=${env.APP_NAME}:latest"
+                                    sh "oc -n ${env.DEV_NAMESPACE} set probe dc/${env.APP_NAME} --liveness --get-url=http://:8080/health --initial-delay-seconds=1 --timeout-seconds=1"
+                                    sh "oc -n ${env.DEV_NAMESPACE} set probe dc/${env.APP_NAME} --readiness --get-url=http://:8080/health --initial-delay-seconds=1 --timeout-seconds=1"
                                     sh "oc expose service ${env.APP_NAME} -n ${env.DEV_NAMESPACE}"
                                 }
                             }
