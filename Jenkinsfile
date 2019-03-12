@@ -8,6 +8,7 @@ pipeline {
 
     parameters {
         string(name: 'DEV_NAMESPACE', defaultValue: 'quarkus-hello', description: "Dev Namespace Name")
+        string(name: 'GRAAL_SLAVE_IMAGE', defaultValue: 'docker-registry.default.svc:5000/openshift/jenkins-slave-mvn-graal:v3.11', description: "Graal Jenkins Slave Builder Image Name")
     }
 
     agent {
@@ -40,7 +41,7 @@ pipeline {
                 serviceAccount 'jenkins'
                 containerTemplate {
                   name 'jnlp'
-                  image "docker-registry.default.svc:5000/openshift/jenkins-slave-mvn-graal:v3.11"
+                  image "${params.GRAAL_SLAVE_IMAGE}"
                   alwaysPullImage true
                   workingDir '/tmp'
                   args '${computer.jnlpmac} ${computer.name}'
