@@ -70,7 +70,6 @@ while true; do curl localhost:8080/hello/greeting/mike && echo; sleep 1; done
 ```
 
 ```
---
 curl localhost:8080/hello
 curl localhost:8080/hello/greeting/mike
 curl localhost:8080/hello/async
@@ -79,6 +78,11 @@ curl localhost:8080/hello/stream
 --
 curl localhost:8080/health
 curl localhost:8080/metrics
+```
+
+```
+export GRAALVM_HOME=/opt/graalvm-ce-1.0.0-rc16
+mvn package -Pnative -DskipTests
 ```
 
 ### Extensions
