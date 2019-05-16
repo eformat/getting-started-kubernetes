@@ -93,13 +93,62 @@ mvn quarkus:list-extensions
 
 mvn quarkus:add-extension -Dextensions="io.quarkus:quarkus-smallrye-health"
 mvn quarkus:add-extension -Dextensions="io.quarkus:quarkus-smallrye-metrics"
+```
 
---
+### Deploy OpenShift
+
+```
 mvn package -Pnative -DskipTests
+oc new-build --binary --name=quarkus-quickstart -l app=quarkus-quickstart
 oc start-build quarkus-quickstart --from-dir=. --follow
 export URL="http://$(oc get route | grep quarkus-quickstart | awk '{print $2}')"
 curl $URL/health
 
 oc set probe dc/quarkus-quickstart --liveness --get-url=http://:8080/health --initial-delay-seconds=1 --timeout-seconds=1
 oc set probe dc/quarkus-quickstart --readiness --get-url=http://:8080/health --initial-delay-seconds=1 --timeout-seconds=1
+```
+
+### Use FMP
+
+```
+# build a local docker image using jar
+mvn package
+mvn fabric8:build -Dfabric8.mode=kubernetes
+
+# test
+docker run -m 200m -td -p 8080:8080 acme/quarkus-quickstart-kubernetes
+
+curl localhost:8080/health
+
+# build a local docker image using native
+mvn package -Pnative
+mvn fabric8:build -Pnative -Dfabric8.mode=kubernetes
+
+# test
+docker run -m 200m -td -p 8080:8080 acme/quarkus-quickstart-kubernetes
+
+curl localhost:8080/health
+
+# have two images
+docker images | grep acme/quarkus-quickstart-kubernetes
+
+# binary build - s2i not covered yet
+oc new-build --binary --name=quarkus-quickstart-kubernetes -l app=quarkus-quickstart-kubernetes
+oc start-build quarkus-quickstart-kubernetes --from-dir=. --follow
+
+# run native image on openshift
+oc new-project quarkus-hello
+oc policy add-role-to-user view --serviceaccount=default -n $(oc project -q)
+mvn fabric8:deploy -Pnative -Dfabric8.mode=openshift
+
+# test
+host=$(oc get route quarkus-quickstart-kubernetes --template='{{ .spec.host }}')
+curl $host/health
+
+# just create resources 
+mvn fabric8:resource
+mvn fabric8:apply -Pnative -Dfabric8.mode=openshift
+
+# undeploy
+mvn fabric8:undeploy
 ```

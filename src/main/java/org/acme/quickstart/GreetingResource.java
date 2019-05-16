@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.reactivestreams.Publisher;
 
@@ -41,11 +42,11 @@ public class GreetingResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/async")
-    public CompletionStage<String> helloAysnc() {        
+    public CompletionStage<String> helloAysnc() {
         return CompletableFuture.supplyAsync(() -> {
             return "hello";
         });
-    }    
+    }
 
     @Inject
     MyBean bean;

@@ -26,7 +26,7 @@ public class GreetingResourceTest {
           .when().get("/hello/greeting/{name}")
           .then()
             .statusCode(200)
-            .body(is("hello " + uuid));
+            .body(is("hello " + uuid + " \u263A"));
     }
 
 }

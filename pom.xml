@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.22.0</surefire.version>
+        <fabric8.maven.plugin.version>4.1.0</fabric8.maven.plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -80,11 +81,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${fabric8.maven.plugin.version}</version>
+            </plugin>
         </plugins>
     </build>
     <profiles>
         <profile>
             <id>native</id>
+            <activation>
+                <property>
+                    <name>native</name>
+                </property>
+            </activation>
+            <properties>
+                <fabric8.generator.name>acme/quarkus-quickstart-kubernetes-native</fabric8.generator.name>
+                <fabric8.generator.quarkus.nativeImage>true</fabric8.generator.quarkus.nativeImage>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -98,6 +113,7 @@
                                 </goals>
                                 <configuration>
                                     <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                                    <dockerBuild>true</dockerBuild>
                                 </configuration>
                             </execution>
                         </executions>
@@ -120,6 +136,11 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>fabric8-maven-plugin</artifactId>
+                        <version>${fabric8.maven.plugin.version}</version>
                     </plugin>
                 </plugins>
             </build>
