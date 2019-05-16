@@ -8,7 +8,7 @@ pipeline {
 
     parameters {
         string(name: 'DEV_NAMESPACE', defaultValue: 'quarkus-hello', description: "Dev Namespace Name")
-        string(name: 'GRAAL_SLAVE_IMAGE', defaultValue: 'docker-registry.default.svc:5000/openshift/jenkins-slave-mvn-graal:v3.11', description: "Graal Jenkins Slave Builder Image Name")
+        string(name: 'GRAAL_SLAVE_IMAGE', defaultValue: 'quay.io/quarkus/centos-quarkus-native-image:latest', description: "Graal Jenkins Slave Builder Image Name")
     }
 
     agent {
