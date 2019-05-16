@@ -41,7 +41,7 @@ pipeline {
                 serviceAccount 'jenkins'
                 containerTemplate {
                   name 'jnlp'
-                  image "quay.io/quarkus/centos-quarkus-native-image:graalvm-1.0.0-rc16"
+                  image "docker-registry.default.svc:5000/openshift/jenkins-slave-mvn-graal"
                   alwaysPullImage true
                   workingDir '/tmp'
                   args '${computer.jnlpmac} ${computer.name}'
