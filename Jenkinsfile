@@ -41,7 +41,7 @@ pipeline {
                 serviceAccount 'jenkins'
                 containerTemplate {
                   name 'jnlp'
-                  image "${params.GRAAL_SLAVE_IMAGE}"
+                  image "quay.io/quarkus/centos-quarkus-native-image:graalvm-1.0.0-rc16"
                   alwaysPullImage true
                   workingDir '/tmp'
                   args '${computer.jnlpmac} ${computer.name}'
