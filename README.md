@@ -27,9 +27,9 @@ metadata:
   annotations:
   creationTimestamp: null
   labels:
-    app: quarkus-quickstart
-    name: quarkus-quickstart
-  name: quarkus-quickstart
+    app: quarkus-quickstart-pipeline
+    name: quarkus-quickstart-pipeline
+  name: quarkus-quickstart-pipeline
 spec:
   output: {}
   postCommit: {}
@@ -59,8 +59,8 @@ EOF
 ## Testing
 
 ```
-mvn quarkus:dev
-mvn compile shamrock:dev -Ddebug=true
+mvn compile quarkus:dev
+mvn compile quarkus:dev -Ddebug=true
 ```
 
 Then, attach your debugger to localhost:5005.
@@ -82,7 +82,7 @@ curl localhost:8080/metrics
 
 ```
 export GRAALVM_HOME=/opt/graalvm-ce-1.0.0-rc16
-mvn package -Pnative -DskipTests
+mvn package -Pnative -DskipTests -Dnative-image.docker-build=true
 ```
 
 ### Extensions
@@ -116,18 +116,18 @@ mvn package
 mvn fabric8:build -Dfabric8.mode=kubernetes
 
 # test
-docker run -m 200m -td -p 8080:8080 acme/quarkus-quickstart-kubernetes
+docker run -td -m 200m -p 8080:8080 acme/quarkus-quickstart-kubernetes
 
-curl localhost:8080/health
+curl -s localhost:8080/health | jq .
 
 # build a local docker image using native
 mvn package -Pnative
 mvn fabric8:build -Pnative -Dfabric8.mode=kubernetes
 
 # test
-docker run -m 200m -td -p 8080:8080 acme/quarkus-quickstart-kubernetes
+docker run -m 200m -td -p 8080:8080 acme/quarkus-quickstart-kubernetes-native
 
-curl localhost:8080/health
+curl -s localhost:8080/health | jq .
 
 # have two images
 docker images | grep acme/quarkus-quickstart-kubernetes
